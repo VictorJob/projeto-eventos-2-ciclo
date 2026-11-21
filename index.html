@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-//
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eventos Fatec | Agenda de eventos</title>
     <meta name="description" content="Workshops, palestras, hackathons e outros eventos da Fatec. Encontre e inscreva-se.">
     <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/personagens/monokuma/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="stylesheet" href="./assets/css/styles.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 
     <!-- Tema: no <head> para aplicar antes da primeira pintura (sem "flash") -->
     <script src="./assets/js/theme.js"></script>
@@ -37,6 +41,9 @@
                 <a class="link" href="index.html#categorias">Categorias</a>
             </li>
             <li class="item">
+                <a class="link" href="calendario.html">Calendário</a>
+            </li>
+            <li class="item">
                 <a class="call-to-action" href="index.html#eventos">Explorar eventos</a>
             </li>
         </ul>
@@ -51,9 +58,21 @@
         </div>
 
         <div class="hero-content">
-            <p class="eyebrow" data-reveal>Agenda oficial · Fatec</p>
-            <h1 class="title" data-reveal>Onde sua turma <span class="highlight">encontra o próximo evento</span></h1>
-            <p class="description" data-reveal>Workshops, palestras, hackathons e muito mais. Encontre o seu e garanta a vaga em poucos cliques.</p>
+            <div class="hero-stage">
+                <div class="hero-copy">
+                    <p class="eyebrow" data-reveal>Agenda oficial · Fatec</p>
+                    <h1 class="title" data-reveal>Eventos Fatec: <span class="highlight">sua próxima aventura acadêmica</span></h1>
+                    <p class="description" data-reveal>Workshops, palestras, hackathons e muito mais. Encontre seu próximo evento e garanta a vaga em poucos cliques.</p>
+                    <div id="home-vn" aria-label="Apresentação da agenda"></div>
+                    <nav class="vn-menu" aria-label="Atalhos de navegação">
+                        <a class="btn-cta" href="#eventos">Novo Jogo <span>· Ver eventos</span></a>
+                        <a class="btn-ghost" href="calendario.html">Continuar <span>· Calendário</span></a>
+                    </nav>
+                </div>
+                <button type="button" class="hero-mascot monokuma-trigger" data-monokuma-trigger aria-label="Abrir a fala do Monokuma" aria-haspopup="dialog" aria-controls="monokuma-dialog">
+                    <img src="./assets/images/personagens/monokuma/monokuma-standing.png" alt="" aria-hidden="true" width="360" height="516">
+                </button>
+            </div>
         </div>
     </header>
 
@@ -131,6 +150,20 @@
         <a class="footer-link" href="admin/login.html">Área do organizador</a>
     </footer>
 
+    <dialog class="monokuma-dialog" id="monokuma-dialog" aria-labelledby="monokuma-dialog-name" aria-describedby="monokuma-dialog-line monokuma-dialog-hint">
+        <div class="monokuma-game-screen">
+            <button type="button" class="monokuma-dialog-close" data-monokuma-close aria-label="Fechar diálogo do Monokuma">×</button>
+            <div class="monokuma-portrait-wrap">
+                <img class="monokuma-dialogue-portrait" src="./assets/images/personagens/monokuma/monokuma-stop.png" alt="Monokuma ergue uma pata com expressão ameaçadora" width="526" height="560">
+            </div>
+            <div class="monokuma-dialogue-box">
+                <span class="monokuma-dialogue-name" id="monokuma-dialog-name">Monokuma</span>
+                <span class="monokuma-dialogue-line" id="monokuma-dialog-line" aria-live="polite" aria-atomic="true">Ei, não toque em mim!!!</span>
+                <span class="monokuma-dialogue-hint" id="monokuma-dialog-hint">Feche pelo botão ×, pela tecla Esc ou clicando fora.</span>
+            </div>
+        </div>
+    </dialog>
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js"></script>
     <script src="./supabase-credentials.js"></script>
     <script src="./assets/js/supabaseClient.js"></script>
@@ -139,6 +172,8 @@
     <script src="./assets/js/motion.js"></script>
     <script src="./js/services/catalogoService.js"></script>
     <script src="./js/components/eventoView.js"></script>
+    <script src="./assets/js/vn.js"></script>
+    <script src="./assets/js/monokuma-interaction.js"></script>
     <script src="./js/pages/home.js"></script>
 </body>
 

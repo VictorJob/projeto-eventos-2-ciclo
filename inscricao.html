@@ -7,13 +7,17 @@
     <title>Inscrição | Eventos Fatec</title>
     <meta name="description" content="Inscreva-se no evento da Fatec.">
     <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/personagens/monokuma/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="stylesheet" href="./assets/css/styles.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 
     <!-- Tema: no <head> para aplicar antes da primeira pintura (sem "flash") -->
     <script src="./assets/js/theme.js"></script>
@@ -35,6 +39,9 @@
             </li>
             <li class="item">
                 <a class="link" href="index.html#categorias">Categorias</a>
+            </li>
+            <li class="item">
+                <a class="link" href="calendario.html">Calendário</a>
             </li>
             <li class="item">
                 <a class="call-to-action" href="index.html#eventos">Explorar eventos</a>
@@ -59,6 +66,7 @@
         <div id="inscricao-vazio" class="empty-state" hidden>
             <p class="empty-state-title" id="inscricao-vazio-titulo">Nenhum evento selecionado</p>
             <p id="inscricao-vazio-texto">Escolha um evento para se inscrever.</p>
+            <div id="inscricao-vazio-vn" aria-label="Mensagem da personagem"></div>
             <a class="btn-cta" href="index.html#eventos">Ver eventos</a>
         </div>
 
@@ -72,6 +80,7 @@
                 </div>
 
                 <p class="feedback" id="inscricao-feedback" role="alert" aria-live="assertive"></p>
+                <div id="inscricao-vn" aria-label="Mensagem da assistente"></div>
 
                 <div class="form-field">
                     <label for="campo-nome">Nome completo</label>
@@ -140,6 +149,7 @@
     <script src="./assets/js/motion.js"></script>
     <script src="./js/services/catalogoService.js"></script>
     <script src="./js/components/eventoView.js"></script>
+    <script src="./assets/js/vn.js"></script>
     <script src="./js/pages/inscricao.js"></script>
 </body>
 

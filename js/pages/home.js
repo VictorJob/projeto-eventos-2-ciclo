@@ -279,6 +279,17 @@
     }
 
     function init() {
+        if (window.vnDialogue) vnDialogue.mount(document.getElementById("home-vn"), {
+            lines: [
+                { name: "Chihiro Fujisaki", text: "Olá! Eu sou o Chihiro, seu assistente nesta plataforma. Vamos encontrar um evento para você?", sprite: "normal.png", expression: "normal" },
+                { name: "Chihiro Fujisaki", text: "Tem palestras, oficinas e projetos. Eu organizei tudo... quer dizer, o sistema organizou!", sprite: "happy.png", expression: "happy" },
+                { name: "Chihiro Fujisaki", text: "Escolha seu próximo evento. Prometo que a interface tem menos bugs do que eu imagino.", sprite: "embarrassed.png", expression: "embarrassed" }
+            ],
+            completionSprite: "/assets/images/personagens/chihiro/fullbody.png",
+            completionAlt: "Chihiro Fujisaki em pé, corpo inteiro",
+            completionReplay: true,
+            completionReplayLabel: "Reiniciar diálogo com Chihiro Fujisaki"
+        });
         eventoView.hydrateIcons();
         readFiltersFromUrl();
         syncControls();

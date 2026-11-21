@@ -36,6 +36,16 @@ const inscricoesService = (function () {
             return { items: data ?? [], total: count ?? 0 };
         },
 
+        /** Lista todos os participantes de um evento; chamada somente no painel autenticado. */
+        async listByEvento(eventoId) {
+            const { data, error } = await window.supabaseClient
+                .from(TABLE)
+                .select(LIST_COLUMNS)
+                .eq("id_evento", eventoId)
+                .order("created_at", { ascending: false });
+            if (error) throw error;
+            return data ?? [];
+        },
         /** Remove a inscrição (vínculo). O participante continua cadastrado. */
         async remove(id) {
             const { data, error } = await window.supabaseClient

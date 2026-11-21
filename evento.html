@@ -7,13 +7,17 @@
     <title>Detalhes do evento | Eventos Fatec</title>
     <meta name="description" content="Detalhes, local, horário e inscrição do evento.">
     <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/personagens/monokuma/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="stylesheet" href="./assets/css/styles.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
 
     <!-- Tema: no <head> para aplicar antes da primeira pintura (sem "flash") -->
     <script src="./assets/js/theme.js"></script>
@@ -35,6 +39,9 @@
             </li>
             <li class="item">
                 <a class="link" href="index.html#categorias">Categorias</a>
+            </li>
+            <li class="item">
+                <a class="link" href="calendario.html">Calendário</a>
             </li>
             <li class="item">
                 <a class="call-to-action" href="index.html#eventos">Explorar eventos</a>
@@ -60,6 +67,7 @@
         <div id="detalhe-nao-encontrado" class="empty-state" hidden>
             <p class="empty-state-title">Evento não encontrado</p>
             <p>O link pode estar incorreto ou o evento foi removido.</p>
+            <div id="notfound-vn" aria-label="Mensagem da personagem"></div>
             <a class="btn-cta" href="index.html#eventos">Ver todos os eventos</a>
         </div>
     </main>
@@ -77,6 +85,7 @@
     <script src="./assets/js/motion.js"></script>
     <script src="./js/services/catalogoService.js"></script>
     <script src="./js/components/eventoView.js"></script>
+    <script src="./assets/js/vn.js"></script>
     <script src="./js/pages/evento.js"></script>
 </body>
 

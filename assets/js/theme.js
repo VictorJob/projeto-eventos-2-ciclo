@@ -13,6 +13,7 @@
     "use strict";
 
     const STORAGE_KEY = "eventos-fatec:tema";
+    const VN_KEY = "eventos-fatec:modo-vn";
     const root = document.documentElement;
     const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -44,6 +45,23 @@
     function apply(value) {
         root.dataset.theme = value;
         document.querySelectorAll(".theme-toggle").forEach(updateButton);
+    }
+    function applyVn(enabled) {
+        root.classList.toggle("vn-mode", enabled);
+        document.querySelectorAll(".serious-toggle").forEach(button => {
+            button.setAttribute("aria-pressed", String(enabled));
+            button.setAttribute("aria-label", "Alternar modo de apresentação");
+            button.title = enabled ? "Voltar ao modo normal" : "Ativar modo visual novel";
+            button.textContent = enabled ? "Modo normal" : "Modo VN";
+        });
+    }
+    function savedVn() {
+        try { return window.localStorage.getItem(VN_KEY) !== "off"; } catch { return true; }
+    }
+    function toggleVn() {
+        const enabled = !root.classList.contains("vn-mode");
+        try { window.localStorage.setItem(VN_KEY, enabled ? "on" : "off"); } catch { /* preferência temporária */ }
+        applyVn(enabled);
     }
 
     function updateButton(button) {
@@ -94,6 +112,15 @@
         button.addEventListener("click", toggle);
         updateButton(button);
         nav.appendChild(item);
+        // Modo de paródia só no site público; o painel mantém a apresentação séria.
+        if (document.body.classList.contains("site")) {
+            const seriousItem = document.createElement("li");
+            seriousItem.className = "item item-serious";
+            seriousItem.innerHTML = '<button type="button" class="serious-toggle" aria-label="Alternar modo de apresentação"></button>';
+            seriousItem.querySelector("button").addEventListener("click", toggleVn);
+            nav.appendChild(seriousItem);
+            applyVn(savedVn());
+        }
     }
 
     // Aplica imediatamente (antes do body).

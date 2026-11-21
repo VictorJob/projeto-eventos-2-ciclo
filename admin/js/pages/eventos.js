@@ -99,7 +99,7 @@
                 <td>${dom.escapeHtml(evento.local)}</td>
                 <td>${dom.escapeHtml(evento.vagas_restantes)} / ${dom.escapeHtml(evento.vagas_totais)}</td>
                 <td class="actions">
-                    <a class="btn-sm btn-edit" href="inscritos.html?evento=${encodeURIComponent(evento.id)}">Ver inscritos</a>
+                    <button type="button" class="btn-sm btn-edit" data-action="participants" data-id="${id}" data-nome="${nome}">Ver participantes</button>
                     <button type="button" class="btn-sm btn-edit" data-action="edit" data-id="${id}">Editar</button>
                     <button type="button" class="btn-sm btn-delete" data-action="delete" data-id="${id}" data-nome="${nome}">Excluir</button>
                 </td>
@@ -245,11 +245,48 @@
         }
     }
 
+    async function openParticipants(button) {
+        const { id, nome } = button.dataset;
+        dom.setLoading(button, true, "Carregando...");
+        try {
+            const [items, evento] = await Promise.all([inscricoesService.listByEvento(id), eventosService.getById(id)]);
+            const box = document.createElement("section");
+            box.className = "participants-modal";
+            const heading = document.createElement("p");
+            heading.className = "participants-count";
+            heading.textContent = `${items.length} de ${evento.vagas_totais ?? "—"} vagas preenchidas`;
+            const search = document.createElement("input");
+            search.type = "search"; search.placeholder = "Buscar por nome..."; search.setAttribute("aria-label", "Buscar participante por nome");
+            const exportButton = document.createElement("button"); exportButton.type = "button"; exportButton.className = "btn-ghost"; exportButton.textContent = "Exportar CSV";
+            const wrap = document.createElement("div"); wrap.className = "admin-table-wrap";
+            const table = document.createElement("table"); table.className = "admin-table";
+            table.innerHTML = "<thead><tr><th>Nome</th><th>E-mail</th><th>WhatsApp</th><th>Data da inscrição</th></tr></thead><tbody></tbody>";
+            const tbody = table.querySelector("tbody"); wrap.append(table); box.append(heading, search, exportButton, wrap);
+            const renderRows = () => {
+                const query = search.value.trim().toLocaleLowerCase("pt-BR");
+                const filtered = items.filter(i => String(i.participante?.nome ?? "").toLocaleLowerCase("pt-BR").includes(query));
+                tbody.innerHTML = filtered.length ? filtered.map(i => `<tr><td>${dom.escapeHtml(i.participante?.nome ?? "—")}</td><td>${dom.escapeHtml(i.participante?.email ?? "—")}</td><td>${dom.escapeHtml(i.participante?.whatsapp ?? "—")}</td><td>${dom.escapeHtml(text.formatDateTime(i.created_at))}</td></tr>`).join("") : '<tr><td colspan="4">Nenhum participante corresponde à busca.</td></tr>';
+            };
+            search.addEventListener("input", renderRows); renderRows();
+            exportButton.addEventListener("click", () => {
+                const quote = value => `"${String(value ?? "").replaceAll('"','""')}"`;
+                const rows = [["Nome","E-mail","WhatsApp","Data da inscrição"], ...items.map(i => [i.participante?.nome,i.participante?.email,i.participante?.whatsapp,i.created_at])];
+                const csv = "\uFEFF" + rows.map(row => row.map(quote).join(",")).join("\r\n");
+                const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+                const a = document.createElement("a"); a.href=url; a.download=`participantes-evento-${id}.csv`; a.click(); URL.revokeObjectURL(url);
+            });
+            await modal.show({ title: `Participantes — ${nome}`, content: box, icon: false, size: "lg" });
+        } catch (error) {
+            console.error("[eventos] Falha ao listar participantes:", error);
+            dom.showFeedback(elements.feedback, "error", "Não foi possível carregar os participantes deste evento.");
+        } finally { dom.setLoading(button, false); }
+    }
     // Delegação: um único listener no <tbody> atende todas as linhas, inclusive as re-renderizadas.
     function handleTableClick(event) {
         const button = event.target.closest("button[data-action]");
         if (!button || button.disabled) return;
 
+        if (button.dataset.action === "participants") openParticipants(button);
         if (button.dataset.action === "edit") openEdit(button.dataset.id, button);
         if (button.dataset.action === "delete") handleDelete(button);
     }

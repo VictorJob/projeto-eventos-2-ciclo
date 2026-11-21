@@ -98,6 +98,13 @@
     /* ---------- Estados da tela ---------- */
 
     function showEmpty(title, message) {
+        if (window.vnDialogue) vnDialogue.mount(document.getElementById("inscricao-vazio-vn"), {
+            lines: title.includes("Vagas") ? [
+                { name: "Chihiro Fujisaki", text: "As vagas acabaram! O destino foi cruel... mas ainda há outras aventuras na agenda.", sprite: "sad.png", expression: "sad" }
+            ] : [
+                { name: "Chihiro Fujisaki", text: "Nenhum evento encontrado... baka! Vamos voltar à agenda e escolher outro?", sprite: "worried.png", expression: "worried" }
+            ], compact: true
+        });
         elements.loading.hidden = true;
         elements.content.hidden = true;
         elements.emptyTitle.textContent = title;
@@ -127,6 +134,11 @@
 
     function showForm() {
         renderSummary();
+        if (window.vnDialogue) vnDialogue.mount(document.getElementById("inscricao-vn"), {
+            lines: [
+                { name: "Chihiro Fujisaki", text: "Preencha os campos com calma. As mensagens junto dos campos ajudam — e eu prometo não julgar seu CPF!", sprite: "normal.png", expression: "normal" }
+            ], compact: true
+        });
         elements.breadcrumbEvent.textContent = evento.nome;
         elements.breadcrumbEvent.href = `evento.html?id=${encodeURIComponent(evento.id)}`;
         document.title = `Inscrição: ${evento.nome} | Eventos Fatec`;
@@ -163,6 +175,15 @@
         const content = elements.confirmationTemplate.content.firstElementChild.cloneNode(true);
         content.querySelector('[data-slot="codigo"]').textContent = codigo ?? "";
         content.querySelector('[data-slot="evento"]').textContent = `${evento.nome} · ${text.formatDateLong(evento.data)}`;
+        const dialogue = document.createElement("div");
+        dialogue.className = "vn-confirmation-slot";
+        content.append(dialogue);
+        if (window.vnDialogue) vnDialogue.mount(dialogue, {
+            lines: [
+                { name: "Chihiro Fujisaki", text: "Inscrição confirmada, senpai! Guarde seu código de confirmação com carinho.", sprite: "happy.png", expression: "happy" },
+                { name: "Chihiro Fujisaki", text: "Pronto! Agora é só aparecer no evento. Eu vou conferir a lista... digo, o sistema vai!", sprite: "embarrassed.png", expression: "embarrassed" }
+            ], compact: true
+        });
 
         await modal.show({
             title: "Inscrição confirmada!",
@@ -185,7 +206,18 @@
         dom.hideFeedback(elements.feedback);
 
         const dados = validation.validateForm(FIELDS);
-        if (!dados) return;
+        if (!dados) {
+            const invalid = elements.form.querySelector('[aria-invalid="true"]');
+            if (invalid) {
+                dom.showFeedback(elements.feedback, "error", "Drama no formulário! Confira os campos destacados e tente novamente.");
+                if (window.vnDialogue) vnDialogue.mount(document.getElementById("inscricao-vn"), {
+                    lines: [
+                        { name: "Chihiro Fujisaki", text: "O chefão da validação apareceu! Corrija os campos destacados; as mensagens acima explicam o que falta.", sprite: "surprised.png", expression: "surprised" }
+                    ], compact: true
+                });
+            }
+            return;
+        }
 
         dom.setLoading(elements.submit, true, "Confirmando...");
 
@@ -203,7 +235,15 @@
                 dom.showFieldError(input, error.message);
                 input.focus();
             }
-            dom.showFeedback(elements.feedback, "error", error.message);
+            const technicalMessage = error.message || "Não foi possível concluir a inscrição.";
+            const dramatic = error.cause?.hint === "vagas_esgotadas" ? "As vagas acabaram! O destino foi cruel — tente outro evento." : "Algo deu errado na inscrição. Confira a mensagem técnica e tente novamente.";
+            dom.showFeedback(elements.feedback, "error", technicalMessage);
+            if (window.vnDialogue) vnDialogue.mount(document.getElementById("inscricao-vn"), {
+                lines: [
+                    { name: "Chihiro Fujisaki", text: dramatic, sprite: error.cause?.hint === "vagas_esgotadas" ? "sad.png" : "worried.png", expression: error.cause?.hint === "vagas_esgotadas" ? "sad" : "worried" },
+                    { name: "Chihiro Fujisaki", text: `Detalhe do sistema: ${technicalMessage}`, sprite: "normal.png", expression: "normal" }
+                ], compact: true
+            });
         } finally {
             dom.setLoading(elements.submit, false);
             if (!eventoView.situacao(evento).aberto) elements.submit.disabled = true; // esgotou

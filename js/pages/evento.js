@@ -100,6 +100,12 @@
     }
 
     function showNotFound() {
+        if (window.vnDialogue) vnDialogue.mount(document.getElementById("notfound-vn"), {
+            lines: [
+                { name: "Chihiro Fujisaki", text: "Nenhum evento encontrado... baka! Acho que essa página se perdeu no corredor.", sprite: "worried.png", expression: "worried" },
+                { name: "Chihiro Fujisaki", text: "A mensagem técnica continua aí em cima. Vamos voltar à lista e tentar de novo?", sprite: "normal.png", expression: "normal" }
+            ], compact: true
+        });
         elements.skeleton.hidden = true;
         elements.content.hidden = true;
         elements.notFound.hidden = false;

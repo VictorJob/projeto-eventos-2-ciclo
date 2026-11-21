@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+    <link rel="icon" type="image/png" sizes="64x64" href="/assets/images/personagens/monokuma/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <title>Calendário | Eventos Fatec</title>
+    <meta name="description" content="Calendário mensal dos eventos da Fatec.">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@500;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="./assets/js/theme.js"></script>
+</head>
+<body class="site">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <nav class="header-menu" aria-label="Principal">
+        <a href="index.html" class="brand"><img class="logo" alt="Eventos Fatec — início" src="./assets/images/logotipo-eventos-fatec.png"></a>
+        <ul class="navigation">
+            <li class="item"><a class="link" href="index.html">Início</a></li>
+            <li class="item"><a class="link" href="index.html#eventos">Eventos</a></li>
+            <li class="item"><a class="link" href="index.html#categorias">Categorias</a></li>
+            <li class="item"><a class="link active" href="calendario.html" aria-current="page">Calendário</a></li>
+            <li class="item"><a class="call-to-action" href="index.html#eventos">Explorar eventos</a></li>
+        </ul>
+    </nav>
+    <main id="conteudo" class="calendar-page">
+        <header class="calendar-heading">
+            <p class="eyebrow">Agenda escolar</p><h1>Calendário de <span class="highlight">eventos</span></h1>
+            <p>Encontre sua próxima aventura acadêmica (e planeje a desculpa para faltar à aula).</p>
+        </header>
+        <label class="calendar-filter" for="calendar-category">Categoria
+            <select id="calendar-category"><option value="">Todas as categorias</option></select>
+        </label>
+        <section class="calendar-panel" aria-label="Calendário mensal">
+            <div class="calendar-toolbar">
+                <div class="calendar-navigation">
+                    <button class="btn-ghost" id="calendar-prev" type="button" aria-label="Mês anterior">‹</button>
+                    <h2 id="calendar-month" aria-live="polite"></h2>
+                    <button class="btn-ghost" id="calendar-next" type="button" aria-label="Próximo mês">›</button>
+                </div>
+                <button class="btn-ghost" id="calendar-today" type="button">Hoje</button>
+            </div>
+            <div id="calendar-status" class="calendar-status" role="status" aria-live="polite">
+                <span id="calendar-status-message" class="calendar-status-message"></span>
+                <button type="button" id="calendar-retry" class="btn-ghost" hidden>Tentar novamente</button>
+            </div>
+            <div id="calendar-grid" class="calendar-grid" role="grid" aria-label="Dias do mês"></div>
+        </section>
+        <div id="calendar-vn" aria-label="Comentário da assistente"></div>
+    </main>
+    <dialog id="day-dialog" class="calendar-dialog" aria-labelledby="day-dialog-title">
+        <div class="calendar-dialog-card"><button type="button" id="day-dialog-close" class="modal-close" aria-label="Fechar">×</button>
+            <h2 id="day-dialog-title"></h2><div id="day-events"></div></div>
+    </dialog>
+    <footer class="footer"><p>© 2026 Eventos Fatec — Projeto de Desenvolvimento Web, 2º ciclo.</p><a class="footer-link" href="admin/login.html">Área do organizador</a></footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js"></script>
+    <script src="./supabase-credentials.js"></script><script src="./assets/js/supabaseClient.js"></script>
+    <script src="./assets/js/utils/dom.js"></script><script src="./assets/js/utils/text.js"></script>
+    <script src="./js/services/catalogoService.js"></script><script src="./assets/js/vn.js"></script>
+    <script src="./js/pages/calendario.js"></script>
+</body>
+</html>
